@@ -1,17 +1,26 @@
 package qqlt
 
 import (
+	"fmt"
 	"testing"
+	"time"
 )
 
 func TestGetLoginQQ(t *testing.T) {
-	bot, _ := NewBotApiClient()
+	bot := NewBotApiClient()
 	//data, err := bot.Post("http://127.0.0.1:36524/api/v1/QQLight/Api_GetSoftVersion", nil)
 	//fmt.Println(data, err)
-	//bot.SendShake("1007139643")
-	//bot.QuitGroup("1017817543")
-	//bot.SetGroupName("1017817543", "测试1")
-	//bot.BanSomeBody("1017817543", "", 0)
-	//bot.SetAnony("1017817543", true)
-	bot.SendLog("66", "测试一下")
+	//bot.SendShake("")
+	//bot.QuitGroup("")
+	//bot.SetGroupName("", "测试1")
+	//bot.BanSomeBody("", "", 0)
+	//bot.SetAnony("", true)
+	//bot.SendLog("66", "测试一下")
+	//bot.SetFriendName("", "大号")
+
+	//p := NewParams()
+	//p.Add("11", 11)
+	//p.Set("111", 111)
+	fmt.Println(bot.GetFriendList(false))
+	time.Sleep(100 * time.Second)
 }
