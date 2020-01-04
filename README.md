@@ -1,6 +1,8 @@
 # qqlt
 一个基于Newbe.Mahua.Framework项目的QQLight机器人框架SDK
 
+[![MIT License](https://github.com/yguilai/qqlt/blob/master/LICENSE)]()
+
 see [godoc](https://godoc.org/github.com/yguilai/qqlt)
 
 [Newbe.Mahua.Framework](https://github.com/newbe36524/Newbe.Mahua.Framework)
