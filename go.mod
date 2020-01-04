@@ -1,4 +1,4 @@
-module qqlt
+module github.com/yguilai/qqlt
 
 go 1.12
 
