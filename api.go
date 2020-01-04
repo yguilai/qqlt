@@ -51,10 +51,6 @@ const (
 	Api_SetPluginState     = "/Api_SetPluginState"
 	Api_DeleteFile         = "/Api_DeleteFile"
 	Api_RepeatFile         = "/Api_RepeatFile"
-
-	// 消息上报类型
-	GetNewMsg = "GetNewMsg"
-
 )
 
 const (
@@ -66,4 +62,13 @@ const (
 	MT_Discuss
 	MT_DiscussTmp
 	MT_QQTmp
+)
+
+const (
+	// 接收的消息类型 字符串
+	RMT_GetNewMsg = "GetNewMsg"
+
+	// 接收的消息类型 整型
+	RMTC_GetPrivateMsg = 1
+	RMTC_GetGroupMsg = 2
 )

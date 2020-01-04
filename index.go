@@ -9,12 +9,12 @@ import (
 	"net/http"
 )
 
-type Msg struct {
-	Type    int32  `json:"type"`
-	GroupId string `json:"groupId"`
-	QQId    string `json:"qqId"`
-	Msg     string `json:"msg"`
-}
+//type Msg struct {
+//	Type    int32  `json:"type"`
+//	GroupId string `json:"groupId"`
+//	QQId    string `json:"qqId"`
+//	Msg     string `json:"msg"`
+//}
 
 type BotApiClient struct {
 	Client  *http.Client
@@ -281,14 +281,12 @@ func (bot *BotApiClient) SetNick(newNick string) {
 }
 
 // GetQQAge 获取q龄
-// Deprecated: 无效
 func (bot *BotApiClient) GetQQAge(qq string) string {
 	res, _ := bot.Post(bot.BaseApi+Api_GetQQAge, Params{"qqid": qq})
 	return res
 }
 
 // GetQQSex 获取性别
-// Deprecated: 无效
 func (bot *BotApiClient) GetQQSex(qq string) string {
 	res, _ := bot.Post(bot.BaseApi+Api_GetQQSex, Params{"qqid": qq})
 	return res
@@ -301,86 +299,96 @@ func (bot *BotApiClient) GetFriendList(cache bool) string {
 }
 
 // GetGroupList 以JSON形式取得群列表
-// Api_GetGroupList
-func (bot *BotApiClient) GetGroupList(qq string) string {
-	res, _ := bot.Post(bot.BaseApi+Api_GetGroupList, Params{"qqid": qq})
+func (bot *BotApiClient) GetGroupList(cache bool) string {
+	res, _ := bot.Post(bot.BaseApi+Api_GetGroupList, Params{"cache": cache})
 	return res
 }
 
 // GetGroupMemberList 以JSON形式取得群成员列表
-// Api_GetGroupMemberList
-func (bot *BotApiClient) GetGroupMemberList(qq string) string {
-	res, _ := bot.Post(bot.BaseApi+Api_GetGroupMemberList, Params{"qqid": qq})
+func (bot *BotApiClient) GetGroupMemberList(groupId string, cache bool) string {
+	res, _ := bot.Post(bot.BaseApi+Api_GetGroupMemberList, Params{"groupID": groupId, "cache": cache})
 	return res
 }
 
 // GetQQInfo 以JSON形式取得某QQ个人信息
-// Api_GetQQInfo
 func (bot *BotApiClient) GetQQInfo(qq string) string {
 	res, _ := bot.Post(bot.BaseApi+Api_GetQQInfo, Params{"qqid": qq})
 	return res
 }
 
 // GetGroupInfo 以JSON形式取得某群信息
-// Api_GetGroupInfo
-func (bot *BotApiClient) GetGroupInfo(qq string) string {
-	res, _ := bot.Post(bot.BaseApi+Api_GetGroupInfo, Params{"qqid": qq})
+func (bot *BotApiClient) GetGroupInfo(groupId string) string {
+	res, _ := bot.Post(bot.BaseApi+Api_GetGroupInfo, Params{"groupID": groupId})
 	return res
 }
 
 // DeleteMsg 撤回自身消息 发出消息不可以秒撤回，腾讯限制，1~2s后才可撤回
-// Api_DeleteMsg
-func (bot *BotApiClient) DeleteMsg(qq string) string {
-	res, _ := bot.Post(bot.BaseApi+Api_DeleteMsg, Params{"qqid": qq})
-	return res
+// @param msgType 1.好友消息 2.群消息 3.群临时消息 4.讨论组消息 5.讨论组临时消息 6.QQ临时消息
+// @param groupId 撤回群消息、群临时消息、讨论组消息、讨论组临时消息必须填写，其余情况可留空
+// @param qqId 撤回好友消息、群临时消息、讨论组临时消息、QQ临时消息必须填写，其余情况可留空
+// @param msgId 撤回的消息ID，机器人发送消息会返回自身的消息ID
+func (bot *BotApiClient) DeleteMsg(msgType int, groupId, qqId, msgId string) {
+	_, _ = bot.Post(bot.BaseApi+Api_DeleteMsg, Params{
+		"type":    0,
+		"groupID": groupId,
+		"qqid":    qqId,
+		"msgID":   msgId,
+	})
 }
 
 // SetQQState 改变QQ在线状态
 // @param state 1.我在线上 2.Q我吧 3.离开 4.忙碌 5.请勿打扰 6.隐身
-// Api_SetQQState
-func (bot *BotApiClient) SetQQState(qq string) string {
-	res, _ := bot.Post(bot.BaseApi+Api_SetQQState, Params{"qqid": qq})
-	return res
+func (bot *BotApiClient) SetQQState(state string) {
+	_, _ = bot.Post(bot.BaseApi+Api_SetQQState, Params{"type": state})
 }
 
 // InviteFriend 邀请好友入群
-// Api_InviteFriend
-func (bot *BotApiClient) InviteFriend(qq string) string {
-	res, _ := bot.Post(bot.BaseApi+Api_InviteFriend, Params{"qqid": qq})
-	return res
+func (bot *BotApiClient) InviteFriend(groupId, qq string) {
+	_, _ = bot.Post(bot.BaseApi+Api_InviteFriend, Params{
+		"groupID": groupId,
+		"qqid":    qq,
+	})
 }
 
 // GetQQInfoV2 获取qq信息 version 2
-// /Api_GetQQInfo_v2
 func (bot *BotApiClient) GetQQInfoV2(qq string) string {
 	res, _ := bot.Post(bot.BaseApi+Api_GetQQInfoV2, Params{"qqid": qq})
 	return res
 }
 
 // UpLoadPic 上传图片
-// Api_UpLoadPic
-func (bot *BotApiClient) UpLoadPic(qq string) string {
-	res, _ := bot.Post(bot.BaseApi+Api_UpLoadPic, Params{"qqid": qq})
+// @param imgType 1.私聊图片 2.群聊图片
+// @param sendId 私聊图片填写QQID，群聊/讨论组图片填写群号讨论组号
+// @param bin 图片的Hex流
+func (bot *BotApiClient) UpLoadPic(imgType int, sendID string, bin string) string {
+	res, _ := bot.Post(bot.BaseApi+Api_UpLoadPic, Params{
+		"type": imgType,
+		"对象":   sendID,
+		"bin":  bin,
+	})
 	return res
 }
 
 // SetPluginState 设置插件状态，开启或关闭
-// Api_SetPluginState
-func (bot *BotApiClient) SetPluginState(qq string) string {
-	res, _ := bot.Post(bot.BaseApi+Api_SetPluginState, Params{"qqid": qq})
-	return res
+func (bot *BotApiClient) SetPluginState(state bool) {
+	_, _ = bot.Post(bot.BaseApi+Api_SetPluginState, Params{"state": state})
 }
 
 // DeleteFile 删除文件
-// Api_DeleteFile
-func (bot *BotApiClient) DeleteFile(qq string) string {
-	res, _ := bot.Post(bot.BaseApi+Api_DeleteFile, Params{"qqid": qq})
+func (bot *BotApiClient) DeleteFile(groupId, guid string) string {
+	res, _ := bot.Post(bot.BaseApi+Api_DeleteFile, Params{
+		"群号":     groupId,
+		"文件GUID": guid,
+	})
 	return res
 }
 
 // RepeatFile 转发文件
-// Api_RepeatFile
-func (bot *BotApiClient) RepeatFile(qq string) string {
-	res, _ := bot.Post(bot.BaseApi+Api_RepeatFile, Params{"qqid": qq})
+func (bot *BotApiClient) RepeatFile(fromId, groupId, guid string) string {
+	res, _ := bot.Post(bot.BaseApi+Api_RepeatFile, Params{
+		"来源对象":   fromId,
+		"转发群号":   groupId,
+		"文件GUID": guid,
+	})
 	return res
 }

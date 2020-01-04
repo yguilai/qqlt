@@ -2,7 +2,6 @@ package qqlt
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -76,6 +75,5 @@ func DefaultServerHandler(ctx *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(u)
 	server.Updates <- u
 }
