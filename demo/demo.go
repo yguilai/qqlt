@@ -8,7 +8,7 @@ import (
 func main() {
 	bot := qqlt.NewBotApiClient()
 	//发送消息
-	bot.SendMsg(qqlt.MT_Friend, "", "1007139643", "")
+	bot.SendMsg(qqlt.MT_Friend, "", "qq号", "")
 
 	// 私聊消息
 	bot.SendMsg(qqlt.MT_Friend, "", "somebody qq", "发送的内容")
