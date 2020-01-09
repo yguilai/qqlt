@@ -7,6 +7,11 @@ see [godoc](https://godoc.org/github.com/yguilai/qqlt)
 
 [Newbe.Mahua.Framework](https://github.com/newbe36524/Newbe.Mahua.Framework)
 
+# 安装
+```
+go get -u github.com/yguilai/qqlt
+```
+
 # 快速开始
 ```go
 func main() {
